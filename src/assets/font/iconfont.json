@@ -1,0 +1,23 @@
+{
+  "id": "4555929",
+  "name": "project",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1920542",
+      "name": "方形减号",
+      "font_class": "fangxingjianhao",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "1920541",
+      "name": "方形加号",
+      "font_class": "fangxingjiahao",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    }
+  ]
+}
