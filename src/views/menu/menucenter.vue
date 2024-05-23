@@ -74,7 +74,7 @@ import * as API from '@/api/center.js'
                 })
                 if(res.status == 200){
                     this.childList = res.data.value  
-                        console.log(res.data.value ,'res.data.value ');
+                        // console.log(res.data.value ,'res.data.value ');
 
                 }
             },

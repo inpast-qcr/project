@@ -552,7 +552,7 @@ import {getEquipmentData,getEquipmentList} from '@/api/equipment.js'
                         }
                         // this.addForm = JSON.parse(JSON.stringify(this.$refs.multipleTable.selection[0]));
 
-                        console.log(this.addForm,'this.addForm');
+                        // console.log(this.addForm,'this.addForm');
                         let editParams = {
                             ...this.addForm,
                             indate: this.addForm.indate ? moment(this.form.indate).format('YYYY-MM-DD') : '',
@@ -560,7 +560,7 @@ import {getEquipmentData,getEquipmentList} from '@/api/equipment.js'
                             supplier: suppliers,
                             schoolCode: this.userInfo.xxdm,
                         }
-                        console.log(editParams,'editParams');
+                        // console.log(editParams,'editParams');
                         api = API.editConsume(editParams)
                     }
                     

@@ -1,15 +1,27 @@
 <template>
-    <div>年级班级管理</div>
+    <div class="home">
+
+    </div>
 </template>
   
 <script>
   
-  export default{
+export default{
+    name:'',
+    data(){
+        return{
+
+        }
+    },
+    methods:{
 
     }
+}
 
 </script>
   
 <style lang="less" scoped>
-  
+.home{
+
+}
 </style>

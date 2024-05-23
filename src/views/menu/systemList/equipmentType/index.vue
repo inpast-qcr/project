@@ -218,7 +218,7 @@ import { nbi } from 'jsencrypt/lib/lib/jsbn/jsbn'
                 this.keys = Math.random()
 
             }
-            console.log(this.tableData,'this.tableData');
+            // console.log(this.tableData,'this.tableData');
 
             
         },

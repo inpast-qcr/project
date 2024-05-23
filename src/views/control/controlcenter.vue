@@ -189,12 +189,12 @@ export default {
         },
         changeMenu(){
             this.isCollapse = !this.isCollapse
-            console.log(isCollapse,'isCollapse');
+            //console.log(isCollapse,'isCollapse');
         },        
         async getMenuRouter(){
             let res = await API.getMenuRouter()
             let menuListRes = res.data.value[0].children[0].children
-            console.log(menuListRes,'res-menuList')
+            //console.log(menuListRes,'res-menuList')
             this.menuList = menuListRes
 
         }

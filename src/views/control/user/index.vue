@@ -119,7 +119,7 @@ import * as API from '@/api/user.js'
         } 
         let res = await API.queryUserPagedList({...params})
         if(res.status == 200){
-          console.log(res,'res');
+          // console.log(res,'res');
           this.userData = res.data.value.list.map(item=>{
             let arr = {}
             if(item.user){

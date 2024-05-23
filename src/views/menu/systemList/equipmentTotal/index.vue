@@ -164,7 +164,7 @@ import {statisticByDevicetype,statisticByStatus,statisticRepair,getDeviceList,ge
             })
             let repairx = res.data.value.map(item=>{return item.name})
             let repairy = res.data.value.map(item=>{return item.value})
-            console.log(res,'res');
+            // console.log(res,'res');
 
             let repairChart = this.$echarts.init(document.getElementById('equipmentRepair'))
             repairChart.setOption({

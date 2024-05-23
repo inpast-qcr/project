@@ -64,7 +64,7 @@ export default {
         if (valid) {         
           this.$store.commit('setUsername',this.ruleForm.user) 
           const rsaPwd = getEncryptCode(this.ruleForm.pwd)
-          console.log(rsaPwd);
+          // console.log(rsaPwd);
           this.$store.commit('setPassword',rsaPwd) 
           axios({
             method: 'post',
@@ -74,11 +74,11 @@ export default {
               password: rsaPwd
             }
           }).then(res=>{
-            console.log(res,'res')
+            // console.log(res,'res')
             this.$store.commit('setToken',res.data.value.token) 
             this.$store.commit('setUserinfo',res.data.value.user) 
-            console.log(this.$store,'store')
-            console.log(this.$store.getters.userInfo,'userinfo')
+            // console.log(this.$store,'store')
+            // console.log(this.$store.getters.userInfo,'userinfo')
             //  if(this.$store.getters.username === res.data.value.user.username&&res.data.value.user.password === 'it \'s a secret')
             if(res.status == 200) 
             {
