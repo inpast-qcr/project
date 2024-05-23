@@ -70,6 +70,9 @@ export default{
             height: 38px;
             
         }
+        .backMenuButton{
+            background-color: #3662EC;
+        }
     }
 
     .planTable{

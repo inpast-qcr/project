@@ -1,58 +1,93 @@
 <template>
     <div class="home">
         <el-dialog
-            :title="title"
+            title="下载模板"
             :visible.sync="visible"
             @cancel="closed"
             class="dialogs"
             width="60%">
             <div class="dialogContext">
                 <div class="step">
-                    <el-steps direction="vertical" :active="active" space="120px"  finish-status="success">
+                    <el-steps direction="vertical" :active="current" space="120px"  finish-status="success">
                         <el-step title="下载值日模板">
-                            <template slot="description">
-                                <div class="temp">
-                                <el-button class="tempButton">下载周次值日模版</el-button>
-                                <el-button class="tempButton">下载学期值日模版</el-button>
-                                <el-button class="tempButton">已有模版</el-button>
+                            <div class="temp" slot="description">
+                                <el-button class="tempButton" @click="down(1)">下载周次值日模版</el-button>
+                                <el-button class="tempButton" @click="down(2)">下载学期值日模版</el-button>
+                                <el-button class="tempButton" @click="current = 1">已有模版</el-button>
                             </div>
-                            </template>
+                            
                         </el-step>
-                        <el-step title="上传文件"></el-step>
-                        <el-step title="33333"></el-step>
+                        <el-step title="上传文件">
+                            <div class="temp" slot="description">
+                                <div class="dialogRadio">
+                                    <el-radio v-model="radio" label="1">学期</el-radio>
+                                    <el-radio v-model="radio" label="2">周次</el-radio>
+                                </div>
+                                <el-button class="tempButton" :disabled="current == 0">上 传</el-button>
+                                <div class="redNotice">注：若值日老师姓名不存在或者重名，请手动维护</div>
+                            </div>
+                            
+                        </el-step>
                     </el-steps>
                 </div>
-                <el-button style="margin-top: 12px;" @click="next">下一步</el-button>
             </div>
             
             <div slot="footer" class="dialog-footer">
-                <el-button @click="closed">取 消</el-button>
-                <el-button type="primary" @click="closed">确 定</el-button>
+                <el-button @click="closed" class="dialogCloseBtn">关 闭</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
   
 <script>
-  
+import {downloadTemplate,downloadTemplateForWholeTerm,queryCurSchoolYear} from '@/api/duty.js'
+import {downFile} from '@/config/common.js'
 export default{
     props:{
         visible:{},
     },
     data(){
         return{
-            title: '',
-            active: 0
+            radio: '1',
+            current: 0,
+            userInfo: this.$store.getters.userInfo,
+            currentYear:null,
         }
 
     },
     methods:{
         closed(){
             this.$emit('cancel',false)    /* closed是子组件方法，cancel是父组件监听事件 */
+            this.current = 0
         },
-        next() {
-        if (this.active++ > 2) this.active = 0;
-      }
+        down(type){
+            let api = null
+            if(type == 1){
+                api = downloadTemplate({schoolCode: this.userInfo.xxdm})
+            }else{
+                api = downloadTemplateForWholeTerm({schoolCode: this.userInfo.xxdm, schoolYear: this.currentYear})
+            }
+            api.then(res=>{
+                // console.log(res,'res');
+                downFile(res.data,type == 1 ? '周次值日模版.xls' : '学期值日模版.xls')
+                this.current = 1
+            })
+        },
+        async getCurrentYear(){
+            let res = await queryCurSchoolYear({
+                schoolCode: this.userInfo.xxdm
+            })
+            if(res.status == 200){
+                this.currentYear = res.data.value
+            }
+        },
+    },
+    watch:{
+        visible(){
+            if(this.visible){
+                this.getCurrentYear()
+            }
+        }
     }
 }
 
@@ -65,6 +100,25 @@ export default{
             overflow: auto;
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
+        }
+        .dialogCloseBtn{
+            background-color: rgba(54, 98, 236, 0.14);
+            color: #3662EC; 
+            border-color: rgba(54, 98, 236, 0.14);
+            border-radius: 8px;
+        }
+        .dialogRadio{
+            margin: 10px 0;
+        }
+        .redNotice{
+            color: red;
+            margin-top: 10px;
+        }
+        .el-button:disabled {
+            color: #fff;
+            background-color: #dce0ea;
+            border: none;
+            cursor: not-allowed;
         }
         /deep/ .el-dialog{
             height: 500px;
