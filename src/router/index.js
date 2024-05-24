@@ -63,6 +63,14 @@ const routes = [
             title: '值日排班设置'
         }
       },
+      {
+        path:'planMessage',
+        name:'planMessage',
+        component: ()=>import('@/views/menu/systemList/dutySys/planMessage.vue'),
+        meta:{
+            title: '值日消息设置'
+        }
+      },
     ]
   },
   {

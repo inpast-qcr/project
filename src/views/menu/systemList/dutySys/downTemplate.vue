@@ -2,8 +2,8 @@
     <div class="home">
         <el-dialog
             title="下载模板"
-            :visible.sync="visible"
-            @cancel="closed"
+            :visible="visible"
+            @close="closed"
             class="dialogs"
             width="60%">
             <div class="dialogContext">
