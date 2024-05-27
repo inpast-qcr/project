@@ -20,11 +20,11 @@
                 <label class="el-icon-delete icons"></label>
                 <label class="btnText">删除</label>
             </el-button>
-            <el-button class='elbutton'>
+            <el-button class='elbutton' @click="openMsg('open')" :disabled="dis()">
                 <label class="el-icon-unlock icons"></label>
                 <label class="btnText">开启</label>
             </el-button>
-            <el-button class='elbutton'>
+            <el-button class='elbutton' @click="openMsg('stop')" :disabled="dis()">
                 <label class="el-icon-lock icons"></label>
                 <label class="btnText">停止</label>
             </el-button>
@@ -130,7 +130,7 @@ export default{
         select(selection, row){
             this.bill_id = row.id;
             // 清除 所有勾选项
-            this.$refs.multipleTable.clearSelection()
+            this.$refs.multipleTable.clearSelection();
             // 当表格数据都没有被勾选的时候 就返回
             // 主要用于将当前勾选的表格状态清除
             if(selection.length == 0) return 
@@ -150,7 +150,30 @@ export default{
             this.msgInfo = item.row.content
             this.viewTitle = '查看【' +item.row.title+ '】消息内容' 
         },
-
+        openMsg(type){
+            let name = type == 'open' ? '开启':'停用'
+            this.$confirm('您确定要'+(name)+'这条消息吗?', '确认提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(async() => {
+                   
+                }).catch(() => {
+                         
+            });
+        },
+        dis(){
+            let selectedRow = this.multipleSelection
+            if(!_.isEmpty(selectedRow)){
+                console.log(selectedRow,'selectedRow');
+                if(selectedRow.taskStatus == '启用'){
+                    console.log(selectedRow.taskStatus,'111');
+                    return true
+                }else{
+                    return false
+                }
+            }
+        },
         init(){
             this.pagination.current = 1
             this.tableData = undefined
@@ -238,7 +261,6 @@ export default{
     }
 
     .dialogs{
-        // display: flex;
         
         .dialogCloseBtn{
             background-color: rgba(54, 98, 236, 0.14);
@@ -252,37 +274,28 @@ export default{
             border: none;
             cursor: not-allowed;
         }
-        /deep/ .el-dialog{
-            height: auto;
-            max-height: 74vh;
-            overflow: hidden;
-            width: 60%;
-            display: flex;
-            flex-direction: column;
+        /deep/ .el-dialog {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0px !important;
         }
         /deep/.el-dialog__header{
             border-bottom: 1px solid #E8E8E8;
             padding-top: 10px;
-            flex-shrink: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-right: 40px;
         }
         
         /deep/ .el-dialog__body{
             padding: 24px;
-            max-height: calc(100%-105px);
+            max-height: 500px;
             overflow-y: auto;
-            flex: 1;
         }
         /deep/ .el-dialog__footer{
             border-top: 1px solid #E8E8E8;
             padding-bottom: 10px;
-            flex-shrink: 0
         }
         /deep/ .el-dialog__headerbtn{
-            margin-left: 30px;
+            top: 10px;
         }
 }
 }

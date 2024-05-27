@@ -12,19 +12,19 @@
                 <label class="el-icon-plus icons"></label>
                 <label class="btnText">添加</label>
             </el-button>
-            <el-button class='elbutton'>
+            <el-button class='elbutton' :disabled="dis(1)">
                 <label class="el-icon-edit icons"></label>
                 <label class="btnText">编辑</label>
             </el-button>
-            <el-button class='elbutton'>
+            <el-button class='elbutton' :disabled="dis(1)">
                 <label class="el-icon-delete icons"></label>
                 <label class="btnText">删除</label>
             </el-button>
-            <el-button class='elbutton'>
+            <el-button class='elbutton' @click="openMsg('open')" :disabled="dis(2)">
                 <label class="el-icon-unlock icons"></label>
                 <label class="btnText">开启</label>
             </el-button>
-            <el-button class='elbutton'>
+            <el-button class='elbutton' @click="openMsg('stop')" :disabled="dis(3)">
                 <label class="el-icon-lock icons"></label>
                 <label class="btnText">停止</label>
             </el-button>
@@ -113,7 +113,8 @@ export default{
             userInfo: this.$store.getters.userInfo,
             view_visible:false,
             msgInfo: null,
-            viewTitle:''
+            viewTitle:'',
+            selectedRows: null
         }
     },
     mounted(){
@@ -125,6 +126,7 @@ export default{
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
+            this.selectedRows = val[val.length - 1];
         },
         //多选变单选
         select(selection, row){
@@ -150,7 +152,32 @@ export default{
             this.msgInfo = item.row.content
             this.viewTitle = '查看【' +item.row.title+ '】消息内容' 
         },
-
+        openMsg(type){
+            let name = type == 'open' ? '开启':'停用'
+            this.$confirm('您确定要'+(name)+'这条消息吗?', '确认提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(async() => {
+                   console.log('111');
+                }).catch(() => {
+                   console.log('222');
+            });
+        },
+        dis(type){
+            let selectedRow = this.selectedRows
+            if(!_.isEmpty(selectedRow)){
+                if(type == 1) return false
+                else if(type == 2){
+                    if(selectedRow.taskStatus == '启用') return true
+                    else return false
+                }else if(type == 3){
+                    if(selectedRow.taskStatus == '停用') return true
+                    else return false
+                }
+            }
+            else  return true
+        },
         init(){
             this.pagination.current = 1
             this.tableData = undefined
@@ -219,13 +246,19 @@ export default{
         }
         .btnText{
             color: #fff;
-            cursor: pointer;
+            pointer-events: none;
         }
         .icons{
             color: #fff;
             margin-right: 5px;
-            cursor: pointer;
+            pointer-events: none;
         }
+        .el-button:disabled {
+            color: #fff;
+            background-color: #dce0ea;
+            cursor: not-allowed;
+        }
+
     }
 
     .searchDatas{
@@ -274,6 +307,7 @@ export default{
         /deep/ .el-dialog__headerbtn{
             top: 10px;
         }
-}
+    }
+
 }
 </style>
