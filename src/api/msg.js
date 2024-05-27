@@ -1,7 +1,6 @@
-import request from "@/request";
+import request from "@/axios";
 
 
-// 值日发送消息
 
 export const getMsgPage = (params) => {
 	return request({
@@ -11,7 +10,7 @@ export const getMsgPage = (params) => {
 	})
 }
 
-// msg/msg/add
+
 export const addMsg = (params) => {
 	return request({
 		url: `/appPlatform/msg/msg/add`,
@@ -20,7 +19,7 @@ export const addMsg = (params) => {
 	})
 }
 
-// msg/msg/modify
+
 export const modifyMsg = (params) => {
 	return request({
 		url: `/appPlatform/msg/msg/modify`,
@@ -29,7 +28,7 @@ export const modifyMsg = (params) => {
 	})
 }
 
-// msg/msg/remove/{id}
+
 export const removeMsg = (params) => {
 	return request({
 		url: `/appPlatform/msg/msg/remove/${params}`,
@@ -53,7 +52,7 @@ export const stopTask = (params) => {
 	})
 }
 
-// msg/msg/get/{id}
+
 export const getMsg = (params) => {
 	return request({
 		url: `/appPlatform/msg/msg/get/${params}`,
