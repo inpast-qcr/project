@@ -16,7 +16,7 @@
                 <label class="el-icon-edit icons"></label>
                 <label class="btnText">编辑</label>
             </el-button>
-            <el-button class='elbutton' :disabled="dis(1)">
+            <el-button class='elbutton' @click="del" :disabled="dis(1)">
                 <label class="el-icon-delete icons"></label>
                 <label class="btnText">删除</label>
             </el-button>
@@ -244,6 +244,27 @@ export default{
                     dayNums:days.join()
                 }
             })
+        },
+        del(){
+            this.$confirm('您确定要'+(name)+'这条消息吗?', '确认提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(async() => {
+                    let id = this.selectedRows.id
+                    if(this.selectedRows.taskStatus == '停用'){
+                        let res = await removeMsg(id)
+                        if(res.status == 200){
+                            this.$message.success("删除成功！");
+                            this.init();
+                        }
+                    }else{
+                        this.$message.error("任务正在进行，无法删除（需先停止任务）");
+                    }
+                    
+                }).catch(() => {
+
+            });
         }
     }
 }
