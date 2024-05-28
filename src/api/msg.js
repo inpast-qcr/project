@@ -36,6 +36,7 @@ export const removeMsg = (params) => {
 	})
 }
 
+//消息状态：开启
 export const openTask = (params) => {
 	return request({
 		url: `/appPlatform/msg/task/open`,
@@ -44,7 +45,7 @@ export const openTask = (params) => {
 	})
 }
 
-
+//消息状态：关闭
 export const stopTask = (params) => {
 	return request({
 		url: `/appPlatform/msg/task/stop/${params}`,

@@ -159,9 +159,40 @@ export default{
                 cancelButtonText: '取消',
                 type: 'warning'
                 }).then(async() => {
-                   console.log('111');
+                   let api = null
+                    
+                   if(type == 'open'){
+                        let days = this.selectedRows.dayNums.split(',').map(item=>{
+                            let time = Number(item)
+                            time = time -1
+                            return time === 0 ? 7 : time
+                        })
+                        api = openTask({
+                            title: this.selectedRows.title,
+                            dayNums: days.join(),
+                            content: this.selectedRows.content,
+                            schoolCode: this.userInfo.xxdm,
+                            taskStatus: type == 'open' ? 1 : 0,
+                            type: 1,
+                            id:this.selectedRows.id || '',
+                            msgType: this.selectedRows.msgType,
+                            picUrl: this.selectedRows.picUrl,
+                            url: this.selectedRows.url,
+                            description: this.selectedRows.description,
+                        })
+                   }else{
+                        api = stopTask(this.selectedRows.id || '')
+                   }
+                   if(api){
+                        api.then(res=>{
+                            if(res.status == 200){
+                                this.$message.success(name + '成功')
+                                this.init()
+                            }
+                        })
+                   }
                 }).catch(() => {
-                   console.log('222');
+
             });
         },
         dis(type){
