@@ -8,11 +8,11 @@
         </div>
 
         <div class="btns">
-            <el-button class='elbutton'>
+            <el-button class='elbutton' @click="eidtConfig('add')">
                 <label class="el-icon-plus icons"></label>
                 <label class="btnText">添加</label>
             </el-button>
-            <el-button class='elbutton' :disabled="dis(1)">
+            <el-button class='elbutton' @click="eidtConfig('edit')" :disabled="dis(1)">
                 <label class="el-icon-edit icons"></label>
                 <label class="btnText">编辑</label>
             </el-button>
@@ -91,16 +91,23 @@
                 <el-button class="dialogCloseBtn" @click="view_visible = false">关 闭</el-button>
             </div>
         </el-dialog>
+
+        <planMsgAdd :visible="down_visible" @cancel="canceld" :info="info" :titles="titles" :weekList="weekList" :types="types" :taskType="taskType"/> 
     </div>
-    
 </template>
   
 <script>
+import planMsgAdd from './msgAdd.vue'
 import { getMsgPage,openTask,stopTask,addMsg,modifyMsg,removeMsg } from '@/api/msg.js'
 export default{
     name:'',
+    components:{
+        planMsgAdd
+    },
     data(){
         return{
+            down_visible:false,
+            info:{},
             tableData:[],
             pagination:{
                 total: 0,
@@ -109,18 +116,69 @@ export default{
                 showSizeChanger: true,
                 pageSizeOptions: ["10", "20", "50", "100"],
             },
+            weekList:[
+                {
+                    value: '1',
+                    label: '周一',
+                    checked:false,
+                },
+                {
+                    value: '2',
+                    label: '周二',
+                    checked:false,
+                },
+                {
+                    value: '3',
+                    label: '周三',
+                    checked:false,
+                },
+                {
+                    value: '4',
+                    label: '周四',
+                    checked:false,
+                },
+                {
+                    value: '5',
+                    label: '周五',
+                    checked:false,
+                },
+                {
+                    value: '6',
+                    label: '周六',
+                    checked:false,
+                },
+                {
+                    value: '7',
+                    label: '周日',
+                    checked:false,
+                }
+            ],
             multipleSelection:[],
             userInfo: this.$store.getters.userInfo,
             view_visible:false,
             msgInfo: null,
             viewTitle:'',
-            selectedRows: null
+            selectedRows: null,
+            type: null,
+            types: null,
+            titles: null,
+            taskType: null
         }
     },
     mounted(){
         this.init()
     },
+    watch:{
+        down_visible(){
+            if(this.down_visible == false){
+                this.init()
+            }
+        }
+    },
     methods:{
+        canceld(val){
+            this.down_visible = val
+        },
         backMenu(){
             this.$router.back()
         },
@@ -153,6 +211,7 @@ export default{
             this.viewTitle = '查看【' +item.row.title+ '】消息内容' 
         },
         openMsg(type){
+            this.taskType = type
             let name = type == 'open' ? '开启':'停用'
             this.$confirm('您确定要'+(name)+'这条消息吗?', '确认提示', {
                 confirmButtonText: '确定',
@@ -221,6 +280,7 @@ export default{
                 pageSize: this.pagination.pageSize,
                 schoolCode: this.userInfo.xxdm
             })
+            
             this.tableData = res.data.value.records.map((item,index)=>{
                 let dayNumsMc = []
                 let d = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
@@ -228,11 +288,13 @@ export default{
                 //将7123456转为1234567
                 let days = item.dayNums.split(',').map(e=>{
                     let time = e
-                    if(Number(time) == 7) time = 1
-                    else time = Number(time) + 1
+                    if(Number(time) == 7) {
+                        time = 1
+                    }else{
+                        time = Number(time) + 1
+                    }
                     return time
                 })
-                
                 //修改1为周一
                 dayNumsMc= days.map(num => d[(num === 7 ? 0 : num)])
 
@@ -244,6 +306,16 @@ export default{
                     dayNums:days.join()
                 }
             })
+        },
+        eidtConfig(type){
+            this.types = type
+            if(type == 'edit'){
+                let selectedRows = this.selectedRows
+                this.info = selectedRows
+                this.titles = '编辑消息提醒'
+            }else this.titles = '添加消息提醒'
+
+            this.down_visible = true
         },
         del(){
             this.$confirm('您确定要'+(name)+'这条消息吗?', '确认提示', {
