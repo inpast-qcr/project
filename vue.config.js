@@ -1,9 +1,10 @@
 const { defineConfig } = require('@vue/cli-service')
+const Title = '智慧校园微应用'
 module.exports = defineConfig({
   transpileDependencies: true,
 
-      // 开启代理服务器
-      devServer: {
+    // 开启代理服务器
+    devServer: {
         client: {
             overlay: false
         },
@@ -18,5 +19,16 @@ module.exports = defineConfig({
                 }
             }
         }
+    },
+
+    // 浏览器标签
+    chainWebpack: config => {
+        // 其他配置
+        config.plugin('html').tap(args => {
+            args[0].title= Title
+            return args
+        })
+        // 移除 prefetch 插件
+        config.plugins.delete('prefetch')
     }
 })

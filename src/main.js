@@ -19,6 +19,13 @@ Vue.use(ElementUI);
 import * as echarts from 'echarts';
 Vue.prototype.$echarts = echarts
 
+//修改浏览器标签
+Vue.directive('title', {
+	inserted: function (el, binding) {
+	  document.title = el.dataset.title
+	}
+  })
+  
 
  //引入quill-editor编辑器
  import VueQuillEditor from 'vue-quill-editor'
