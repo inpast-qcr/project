@@ -1,5 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 const Title = '智慧校园微应用'
+
+
 module.exports = defineConfig({
   transpileDependencies: true,
 

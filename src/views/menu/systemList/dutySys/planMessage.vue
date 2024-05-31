@@ -318,7 +318,7 @@ export default{
             this.down_visible = true
         },
         del(){
-            this.$confirm('您确定要'+(name)+'这条消息吗?', '确认提示', {
+            this.$confirm('您确定要删除这条消息吗?', '确认提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

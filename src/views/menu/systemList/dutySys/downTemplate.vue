@@ -20,8 +20,20 @@
                         <el-step title="上传文件">
                             <div class="temp" slot="description">
                                 <div class="dialogRadio">
-                                    <el-radio v-model="radio" label="1">学期</el-radio>
-                                    <el-radio v-model="radio" label="2">周次</el-radio>
+                                    <el-radio-group v-model="weekType">
+                                        <el-radio v-model="radio" label="1">学期</el-radio>
+                                        <el-radio v-model="radio" label="2">周次</el-radio>
+                                    </el-radio-group>
+                                </div>
+                                <div v-if="weekType == 2" class="weekTypes">
+                                    <el-select v-model="ifAllWeek" placeholder="请选择">
+                                        <el-option value="1" label="覆盖所有周次"></el-option>
+                                        <el-option value="0" label="覆盖部分周次"></el-option>
+                                    </el-select>        
+                                    <el-select v-model="ifAllWeek" placeholder="请选择">
+                                        <el-option value="1" label="覆盖所有周次"></el-option>
+                                        <el-option value="0" label="覆盖部分周次"></el-option>
+                                    </el-select>
                                 </div>
                                 <el-button class="tempButton" :disabled="current == 0">上 传</el-button>
                                 <div class="redNotice">注：若值日老师姓名不存在或者重名，请手动维护</div>
@@ -52,6 +64,8 @@ export default{
             current: 0,
             userInfo: this.$store.getters.userInfo,
             currentYear:null,
+            weekType: 1,
+            ifAllWeek: '0',
         }
 
     },
@@ -68,7 +82,8 @@ export default{
                 api = downloadTemplateForWholeTerm({schoolCode: this.userInfo.xxdm, schoolYear: this.currentYear})
             }
             api.then(res=>{
-                // console.log(res,'res');
+                console.log(res,'res');
+                console.log(typeof(res),'resType');
                 downFile(res.data,type == 1 ? '周次值日模版.xls' : '学期值日模版.xls')
                 this.current = 1
             })
@@ -147,12 +162,19 @@ export default{
     .step{
         height: 300px;
         margin: 30px 0 0 30px;
+        .weekTypes{
+            display: inline-block;
+        }
         .tempButton{
+            display: inline-block;
             margin-top: 10px;
             background-color: #3662EC;
             color: #fff;
             border-radius: 5px;
         }
+        // .el-select{
+        //     margin-right: 10px;
+        // }
         //已完成
         /deep/ .el-step__head.is-success .el-step__icon {
             background-color: #fff ;
