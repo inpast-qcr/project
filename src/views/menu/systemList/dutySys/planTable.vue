@@ -50,7 +50,7 @@
         </div>
 
         <!-- cancel是父子组件的监听事件，canceld是父组件的方法 -->
-        <downTem :visible="down_visible" @cancel="canceld"/>    
+        <downTem :visible="down_visible" @cancel="canceld" :weeks="weeks" :currentWeekNum="currentWeekNum"/>    
     </div>
 </template>
   

@@ -1,10 +1,18 @@
 const { defineConfig } = require('@vue/cli-service')
-const Title = '智慧校园微应用'
+const Title = '微应用'
 
 
 module.exports = defineConfig({
   transpileDependencies: true,
 
+
+        // 设置默认标题
+        chainWebpack: config => {
+            config.plugin('html').tap(args => {
+            args[0].title = Title; 
+            return args;
+            });
+        },
       // 开启代理服务器
       devServer: {
         client: {
