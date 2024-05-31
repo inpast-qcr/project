@@ -1,6 +1,5 @@
 <template>
-  <div id="app" v-title data-title="智慧校园微应用"
->
+  <div id="app">
     <router-view/>
   </div>
 </template>
