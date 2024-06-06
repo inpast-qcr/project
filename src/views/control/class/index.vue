@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-
+        年级班级
     </div>
 </template>
   

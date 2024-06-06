@@ -2,7 +2,7 @@
     <div class="menu">      
         <div class="menuTitle">微服务中心</div>
         <div clas="menu-nav">
-            <el-menu :default-active="activeIndex.toString()" class="el-menu-demo" mode="horizontal" @select="handleSelect" >
+            <el-menu :default-active="activeIndex.toString()" class="el-menu-demo" mode="horizontal" >
                 <el-menu-item v-for="(item,index) in menuList" :key="item.id + '_nav'" :index="index.toString()" @click="changeNav(item,index)">
                     {{ item.categoryName }}
                 </el-menu-item>      
@@ -79,9 +79,6 @@ import * as API from '@/api/center.js'
                 }
             },
 
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
-            },
             toSys(item){
             let sourcepath = item.sourcePath.substring(7)
             this.$router.push({path: sourcepath})

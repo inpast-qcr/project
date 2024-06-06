@@ -71,14 +71,19 @@ export default{
             userInfo: this.$store.getters.userInfo,
             currentYear: null,
             headList:[],
-            weekTeacherList:[]
+            weekTeacherList:[],
+            activeIndex: 0,
         }
     },
     async mounted(){
         this.getCurrentYear()
         this.getGradeList()
+        this.log()
     },
     methods:{
+        log(){
+            console.log(this.userInfo,'this.userInfo');
+        },
         backMenu(){
             this.$router.back()
         },
@@ -106,18 +111,23 @@ export default{
             }
         },
         getCurrentWeekNum(){
+            // timestamp(null,2)函数，传入当前日期，date 为 null，则使用当前日期；否则，使用传入的日期
+            // 1: 返回 YYYY-MM-DD
+            // 2: 返回 YYYY-MM-DD HH:mm:ss
             let currentDay = timestamp(null,2)
-            let timest = new Date(currentDay).getTime()
+            let timest = new Date(currentDay).getTime()     //时间字符串 -->  时间戳
             let current = this.weeks.filter(item=> (new Date(item.startDay).getTime() <= timest) && (timest <=  new Date(item.endDay).getTime()))
             if(current && current.length > 0){
                 this.currentWeekNum = current[0].weekNum
                 this.weekNum = this.currentWeekNum
                 this.weekChange(this.currentWeekNum)
+            }else{
+                this.error = '不在本学期内'
             }
         },
         weekChange(e){
             this.activeIndex = this.weeks.findIndex(item=>item.weekNum == e)
-            // this.getTeacher()
+            this.getTeacher()
         },
         async getGradeList(){
             let res = await queryGradeList({

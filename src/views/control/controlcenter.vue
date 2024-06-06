@@ -10,6 +10,7 @@
                     router 
                     :collapse="isCollapse"
                     :default-openeds="['2']"
+                    @select="handleMenuSelect"
             >
                 <el-submenu index="1" class="title">
                     <template slot="title">
@@ -23,11 +24,9 @@
                     </template>
                     <!-- 侧边栏内容 -->
                     <el-menu-item  v-for="item in menuList" :index="'/controlcenter' + item.path" :key="item.path">
-                        <label @click="addTab(editableTabsValue)">{{ item.title }}</label>  <!-- 添加标签页 -->
+                        <label >{{ item.title }}</label>  <!-- 添加侧边栏item -->
                     </el-menu-item>                    
-                    <!-- <el-menu-item index="/controlcenter/controlrole">
-                        <label @click="addTab(editableTabsValue)">角色</label>
-                    </el-menu-item> -->
+
 
                 </el-submenu>
             </el-menu>
@@ -50,7 +49,7 @@
                 </div>
                 <!-- 标签页 -->
                 <div class="menuTab">
-                    menuTab
+                    <!-- <DynamicTabs :tabs="tabs" :active-tab="activeTab" @remove-tab="removeTab"/> -->
                 </div>
             </el-header>
             <!-- 主体 -->
@@ -171,12 +170,18 @@
   
 <script>
 import * as API from '@/api/menu.js'
+import DynamicTabs from './DynamicTabs.vue';
 export default {
+    components:{
+        DynamicTabs
+    },
     data(){
         return{
             userInfo: this.$store.getters.userInfo,
             isCollapse: false,
-            menuList: []
+            menuList: [],
+            activeTab: '', // 当前激活的标签页名称
+            tabs: [] // 存储标签页信息的数组
         }
     },
     created(){
@@ -194,10 +199,20 @@ export default {
         async getMenuRouter(){
             let res = await API.getMenuRouter()
             let menuListRes = res.data.value[0].children[0].children
-            //console.log(menuListRes,'res-menuList')
             this.menuList = menuListRes
+        },
+        handleMenuSelect(index) {
+            const newTab = {
+                title: `标签页 ${index}`,
+                name: index,
+                content: `内容 ${index}`
+            };
 
-        }
+            if (!this.tabs.some(tab => tab.name === index)) {
+                this.tabs.push(newTab);
+            }
+            this.activeTab = index;
+        },
     }
 };
 </script>

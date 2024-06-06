@@ -95,7 +95,7 @@ const routes = [
         },
       },
       {
-        path: '"ddSync"',
+        path: 'ddSync',
         name: 'ddSync',
         component: ()=>import('../views/control/ddSync/index.vue'),
         meta: {
@@ -119,8 +119,8 @@ const routes = [
         },
       },
       {
-        path: '""dataPower""',
-        name: '"dataPower"',
+        path: 'dataPower',
+        name: 'dataPower',
         component: ()=>import('../views/control/dataPower/index.vue'),
         meta: {
           title: '数据授权'
