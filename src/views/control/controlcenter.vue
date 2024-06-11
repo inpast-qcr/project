@@ -49,7 +49,7 @@
                 </div>
                 <!-- 标签页 -->
                 <div class="menuTab">
-                    <!-- <DynamicTabs :tabs="tabs" :active-tab="activeTab" @remove-tab="removeTab"/> -->
+                    <MultiTab :addPage="addPage"/>
                 </div>
             </el-header>
             <!-- 主体 -->
@@ -170,18 +170,24 @@
   
 <script>
 import * as API from '@/api/menu.js'
-import DynamicTabs from './DynamicTabs.vue';
+import MultiTab from './MultiTab.vue';
 export default {
     components:{
-        DynamicTabs
+        MultiTab
     },
     data(){
         return{
             userInfo: this.$store.getters.userInfo,
             isCollapse: false,
             menuList: [],
-            activeTab: '', // 当前激活的标签页名称
-            tabs: [] // 存储标签页信息的数组
+            addPage: []
+        }
+    },
+    watch: {
+        $route() {
+            this.addPage = []
+            this.addPage.push(this.$route)
+            // console.log(this.addPage,'this.addPage');
         }
     },
     created(){
@@ -200,18 +206,25 @@ export default {
             let res = await API.getMenuRouter()
             let menuListRes = res.data.value[0].children[0].children
             this.menuList = menuListRes
+            // console.log(this.menuList,'this.menuList');
+            
         },
         handleMenuSelect(index) {
-            const newTab = {
-                title: `标签页 ${index}`,
-                name: index,
-                content: `内容 ${index}`
-            };
+            // this.$nextTick(() => {
+            //     this.addPage.push(this.$route)
+            // });
+            // console.log(this.addPage,'this.addPage');
+            // const newTab = {
+            //     title: `标签页 ${index}`,
+            //     name: index,
+            //     content: `内容 ${index}`
+            // };
 
-            if (!this.tabs.some(tab => tab.name === index)) {
-                this.tabs.push(newTab);
-            }
-            this.activeTab = index;
+            // if (!this.tabs.some(tab => tab.name === index)) {
+            //     this.tabs.push(newTab);
+            // }
+            // this.activeTab = index;
+            // console.log(index,'index');
         },
     }
 };

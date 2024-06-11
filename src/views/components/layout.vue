@@ -4,7 +4,7 @@
             <el-row type="flex" justify="space-between">
                 <el-col :span="4" ><span class="logo">微应用</span></el-col>
                 <el-col :span="4" >
-                    <label class="controlLogo" @click="$router.push({name: 'controlcenter'})">控制台</label> 
+                    <label class="controlLogo" @click="$router.push({name: 'user'})">控制台</label> 
                     <el-dropdown>
                         <i class="el-icon-user" style="color: #fff; cursor: pointer; font-size:20px; margin-left: 20px;">{{ userInfo.name }}</i>
                         <el-dropdown-menu slot="dropdown">
