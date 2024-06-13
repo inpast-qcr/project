@@ -49,14 +49,17 @@
                 </div>
                 <!-- 标签页 -->
                 <div class="menuTab">
-                    <MultiTab :addPage="addPage"/>
+                    <MultiTab :addPage="addPage" :menuSelectIndex="menuSelectIndex"/>
                 </div>
             </el-header>
             <!-- 主体 -->
             <el-main>
 
                 <div class="serviceBox">
-                    <router-view />
+                    <!-- <router-view /> -->
+                    <keep-alive>
+                        <router-view></router-view>
+                    </keep-alive>
                 </div>
                 
             </el-main>
@@ -180,7 +183,8 @@ export default {
             userInfo: this.$store.getters.userInfo,
             isCollapse: false,
             menuList: [],
-            addPage: []
+            addPage: [],
+            menuSelectIndex: 'user'
         }
     },
     watch: {
@@ -224,7 +228,10 @@ export default {
             //     this.tabs.push(newTab);
             // }
             // this.activeTab = index;
-            // console.log(index,'index');
+            if(index){
+                this.menuSelectIndex = index.replace("/controlcenter/","")
+            }
+
         },
     }
 };

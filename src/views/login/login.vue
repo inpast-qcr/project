@@ -4,12 +4,12 @@
       <div class="logo">
         <div class="loginTitle">登录</div>
       </div>
-      <el-form :model="ruleForm"  :rules="rules" ref="ruleForm"  label-width="70px" class="login-from">
+      <el-form :model="ruleForm"  :rules="rules" ref="ruleForm"  label-width="70px" class="login-from" autocomplete="on">
           <el-form-item label-width="0px" prop="user">
-              <el-input class='login-input' v-model="ruleForm.user" placeholder="请输入用户名"></el-input>
+              <el-input class='login-input' type="text" v-model="ruleForm.user" placeholder="请输入用户名" ></el-input>
           </el-form-item>
           <el-form-item label-width="0px" prop="pwd">
-              <el-input class='login-input' type="password" v-model="ruleForm.pwd" placeholder="请输入密码" autocomplete="off"></el-input>
+              <el-input class='login-input' type="password" v-model="ruleForm.pwd" placeholder="请输入密码" ></el-input>
           </el-form-item>
       </el-form>
       <div class="btnGroup">
@@ -55,6 +55,14 @@ export default {
       },
       loading: false, // 是否显示加载动画
     };
+  },
+  created() {
+    // 从sessionStorage中加载数据填充表单
+    const vuexData = JSON.parse(sessionStorage.getItem('vuex'));
+    if (vuexData && vuexData.User.token!=null) {
+      this.ruleForm.user = vuexData.User.username;
+      // this.ruleForm.pwd = vuexData.User.password;
+    }
   },
   methods: {
     submitForm(formName) {
@@ -153,8 +161,16 @@ export default {
          &::placeholder {
             color: #fff;
           }
+
       }
-      
+      :deep(.el-input__inner:-webkit-autofill) {
+        -webkit-text-fill-color: #fff !important;
+        box-shadow: 0 0 0px 1000px transparent inset !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        transition: background-color 50000s ease-in-out 0s !important;
+      }   
+
     :deep(.el-form-item__error){
       font-size: 0.17rem;
       color: red;
